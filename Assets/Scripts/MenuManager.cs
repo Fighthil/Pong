@@ -11,12 +11,12 @@ public class MenuManager : MonoBehaviour
 
     void Start()
     {
-        startButton = UIDoc.rootVisualElement.Q<Button>("startButton");
+        startButton = UIDoc.rootVisualElement.Q<Button>("StartButton");
         startButton.clicked += openMenu;
     }
 
     void openMenu()
     {
-        SceneManager.LoadScene("Settings");
+        SceneManager.LoadScene("SettingsMenu");
     }
 }
