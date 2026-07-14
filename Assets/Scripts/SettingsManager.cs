@@ -10,7 +10,7 @@ public class Settings : MonoBehaviour
     public int players = 2;
     public int roundsToWin;
     public int maxBallSpeed;
-    public int startingBall;
+    public string startingBall;
 
     public UIDocument UIDoc;
 
@@ -23,6 +23,10 @@ public class Settings : MonoBehaviour
     private UnityEngine.UIElements.Button randomizerButton;
     private UnityEngine.UIElements.Button startButton;
 
+    private void Awake() {
+        DontDestroyOnLoad(gameObject); //This gameobject now persits between scenes
+    }
+
     void Start()
     {
         onePlayer = UIDoc.rootVisualElement.Q<UnityEngine.UIElements.Button>("1Player");
@@ -34,13 +38,29 @@ public class Settings : MonoBehaviour
         randomizerButton = UIDoc.rootVisualElement.Q<UnityEngine.UIElements.Button>("RandomizedButton");
         startButton = UIDoc.rootVisualElement.Q<UnityEngine.UIElements.Button>("StartButton");
 
+        losersButton.clicked += LosersBall;
+        winnersButton.clicked += WinnersBall;
+        randomizerButton.clicked += RandomBall;
 
         startButton.clicked += StartGame;
     }
 
     private void Highlight()
     {
-        
+        //Make code so that the selected button is highlighed
+    }
+
+    private void LosersBall()
+    {
+        startingBall = "losers";
+    }
+    private void WinnersBall()
+    {
+        startingBall = "winners";
+    }
+    private void RandomBall()
+    {
+        startingBall = "random";
     }
 
     private void StartGame()

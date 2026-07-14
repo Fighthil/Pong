@@ -8,7 +8,9 @@ public class Ball : MonoBehaviour
     Rigidbody2D rb;
     public float startSpeed;
     private float speed;
-    public float maxSpeed;
+    public int maxSpeed;
+    public int roundsToWin;
+    public string startingBall;
 
     private int _P1Score = 0;
     private int _P2Score = 0;
@@ -24,6 +26,7 @@ public class Ball : MonoBehaviour
     public GameObject player1;
     public GameObject player2;
 
+    private Settings settings;
 
     private int _oldWall = 0;
     private int _justWon = 0;
@@ -37,6 +40,17 @@ public class Ball : MonoBehaviour
 
     void Start()
     {
+        GameObject settingsObject = GameObject.Find("SettingsManager");
+
+        if(settingsObject != null)
+        {
+            settings = settingsObject.GetComponent<Settings>();
+
+            maxSpeed = settings.maxBallSpeed;
+            roundsToWin = settings.roundsToWin;
+            startingBall = settings.startingBall;
+        }
+
         _scoreText = UIDoc.rootVisualElement.Q<Label>("Score");
         speed = startSpeed;
         rb = GetComponent<Rigidbody2D>(); //getting a referance to the rigidbody
@@ -51,9 +65,38 @@ public class Ball : MonoBehaviour
 
     private void Launch()
     {
+        Debug.Log(maxSpeed);
         transform.position = new Vector3(0, 0, 0); //setting up the starting position
 
-        if(_P1Score == _P2Score)
+        _oldPaddle = 0;
+        _newPaddle = 0;
+
+        if(startingBall != "random")
+        {
+            if(_P1Score == _P2Score)
+            {
+                _direction = Random.Range(0,2);
+                if(_direction == 0)
+                {
+                    rb.linearVelocity = new Vector2(speed, Random.Range(-3,4));
+                } else
+                {
+                    rb.linearVelocity = new Vector2(-speed, Random.Range(-3,4));
+                }
+            }
+            else
+            {
+                if(startingBall == "winners")
+                {
+                    rb.linearVelocity = new Vector2(speed * _justWon, Random.Range(-5,6));
+                }
+                else if(startingBall == "losers")
+                {
+                    rb.linearVelocity = new Vector2(speed * -_justWon, Random.Range(-5,6));
+                }
+            }
+        }
+        else
         {
             _direction = Random.Range(0,2);
             if(_direction == 0)
@@ -63,10 +106,6 @@ public class Ball : MonoBehaviour
             {
                 rb.linearVelocity = new Vector2(-speed, Random.Range(-3,4));
             }
-        }
-        else
-        {
-            rb.linearVelocity = new Vector2(speed * _justWon, Random.Range(-5,6));
         }
     }
 
