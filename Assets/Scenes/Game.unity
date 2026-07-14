@@ -587,6 +587,9 @@ MonoBehaviour:
   maxSpeed: 12
   topWall: {fileID: 847058117}
   bottomWall: {fileID: 961348498}
+  angleIntensity: 1.5
+  player1: {fileID: 315265757}
+  player2: {fileID: 1678431650}
   UIDoc: {fileID: 627284129}
   PhysBounce: {fileID: 6200000, guid: 14328a9e3c704a044b07bb7e53c21ff6, type: 2}
 --- !u!1 &519420028

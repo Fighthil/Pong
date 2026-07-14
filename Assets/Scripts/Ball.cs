@@ -17,13 +17,18 @@ public class Ball : MonoBehaviour
     public GameObject bottomWall;
 
     private int _direction;
-
+    public float angleIntensity;
     private int _oldPaddle = 0;
     private int _newPaddle;
+
+    public GameObject player1;
+    public GameObject player2;
+
 
     private int _oldWall = 0;
     private int _justWon = 0;
     private int _newWall;
+    private float heightDifference;
     public UIDocument UIDoc;
     public PhysicsMaterial2D PhysBounce;
     Label _scoreText;
@@ -65,9 +70,24 @@ public class Ball : MonoBehaviour
         }
     }
 
+    private float BounceAngle()
+    {
+        if(_newPaddle == 1)
+        {
+            heightDifference = transform.position.y - player1.transform.position.y;
+            return heightDifference * angleIntensity;
+        }
+        else
+        {
+            heightDifference = transform.position.y - player2.transform.position.y;
+            return heightDifference * angleIntensity;
+        }
+    }
+
     private void Bounce()
     {
         rb.linearVelocityX = -rb.linearVelocityX;
+        rb.linearVelocityY = BounceAngle();
         Debug.Log(rb.linearVelocityX);
         if(rb.linearVelocityX >= maxSpeed || rb.linearVelocityX <= -maxSpeed)
         {
