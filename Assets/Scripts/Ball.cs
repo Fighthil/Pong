@@ -13,6 +13,7 @@ public class Ball : MonoBehaviour
     public int roundsToWin;
     public string startingBall = "winners";
 
+    public int playerNum;
     private int _P1Score = 0;
     private int _P2Score = 0;
 
@@ -48,6 +49,7 @@ public class Ball : MonoBehaviour
         {
             settings = settingsObject.GetComponent<Settings>();
 
+            playerNum = settings.players;
             maxSpeed = settings.maxBallSpeed;
             roundsToWin = settings.roundsToWin;
             startingBall = settings.startingBall;
@@ -64,7 +66,7 @@ public class Ball : MonoBehaviour
 
         speed = startSpeed;
         rb = GetComponent<Rigidbody2D>(); //getting a referance to the rigidbody
-        Launch();
+        Invoke(nameof(Launch), 0.5f);
         ChangeScore();
     }
 
@@ -80,8 +82,8 @@ public class Ball : MonoBehaviour
 
     private void Launch()
     {
-        Debug.Log(maxSpeed);
         transform.position = new Vector3(0, 0, 0); //setting up the starting position
+        rb.linearVelocity = Vector2.zero;
 
         _oldPaddle = 0;
         _newPaddle = 0;
@@ -93,21 +95,21 @@ public class Ball : MonoBehaviour
                 _direction = Random.Range(0,2);
                 if(_direction == 0)
                 {
-                    rb.linearVelocity = new Vector2(speed, Random.Range(-3,4));
+                    rb.linearVelocity = new Vector2(startSpeed, Random.Range(-3,4));
                 } else
                 {
-                    rb.linearVelocity = new Vector2(-speed, Random.Range(-3,4));
+                    rb.linearVelocity = new Vector2(-startSpeed, Random.Range(-3,4));
                 }
             }
             else
             {
                 if(startingBall == "winners")
                 {
-                    rb.linearVelocity = new Vector2(speed * _justWon, Random.Range(-5,6));
+                    rb.linearVelocity = new Vector2(startSpeed * _justWon, Random.Range(-3,4));
                 }
                 else if(startingBall == "losers")
                 {
-                    rb.linearVelocity = new Vector2(speed * -_justWon, Random.Range(-5,6));
+                    rb.linearVelocity = new Vector2(startSpeed * -_justWon, Random.Range(-3,4));
                 }
             }
         }
@@ -116,10 +118,10 @@ public class Ball : MonoBehaviour
             _direction = Random.Range(0,2);
             if(_direction == 0)
             {
-                rb.linearVelocity = new Vector2(speed, Random.Range(-3,4));
+                rb.linearVelocity = new Vector2(startSpeed, Random.Range(-3,4));
             } else
             {
-                rb.linearVelocity = new Vector2(-speed, Random.Range(-3,4));
+                rb.linearVelocity = new Vector2(-startSpeed, Random.Range(-3,4));
             }
         }
     }
@@ -142,7 +144,6 @@ public class Ball : MonoBehaviour
     {
         rb.linearVelocityX = -rb.linearVelocityX;
         rb.linearVelocityY = BounceAngle();
-        Debug.Log(rb.linearVelocityX);
         if(rb.linearVelocityX >= maxSpeed || rb.linearVelocityX <= -maxSpeed)
         {
             PhysBounce.bounciness = 1;
@@ -232,6 +233,7 @@ public class Ball : MonoBehaviour
             _scoreText.text = "Player 2 Wins!";
         }
         startSpeed = 0;
+        rb.linearVelocity = Vector2.zero;
         GetComponent<SpriteRenderer>().enabled = false;
         _menuButton.SetEnabled(true);
         _menuButton.visible = true;

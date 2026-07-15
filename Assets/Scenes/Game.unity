@@ -583,10 +583,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6c12fa7f0a111544b8aa9b876b89fb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ball
-  startSpeed: 6
+  startSpeed: 5
   maxSpeed: 12
   roundsToWin: 0
   startingBall: losers
+  playerNum: 0
   topWall: {fileID: 847058117}
   bottomWall: {fileID: 961348498}
   angleIntensity: 1.5
@@ -1332,6 +1333,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   player1: {fileID: 315265760}
   player2: {fileID: 1678431653}
+  BallObject: {fileID: 403417608}
   speed: 7
   P1Pos: 0
   P2Pos: 0

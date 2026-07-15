@@ -38,6 +38,9 @@ public class Settings : MonoBehaviour
         randomizerButton = UIDoc.rootVisualElement.Q<UnityEngine.UIElements.Button>("RandomizedButton");
         startButton = UIDoc.rootVisualElement.Q<UnityEngine.UIElements.Button>("StartButton");
 
+        onePlayer.clicked += onePlayerPressed;
+        twoPlayers.clicked += twoPlayersPressed;
+
         losersButton.clicked += LosersBall;
         winnersButton.clicked += WinnersBall;
         randomizerButton.clicked += RandomBall;
@@ -48,6 +51,16 @@ public class Settings : MonoBehaviour
     private void Highlight()
     {
         //Make code so that the selected button is highlighed
+    }
+
+    private void onePlayerPressed()
+    {
+        players = 1;
+    }
+
+    private void twoPlayersPressed()
+    {
+        players = 2;
     }
 
     private void LosersBall()
@@ -74,6 +87,6 @@ public class Settings : MonoBehaviour
         roundsToWinSlider.label = "Rounds to Win: " + roundsToWinSlider.value;
 
         maxBallSpeed = maxBallSpeedSlider.value;
-        maxBallSpeedSlider.label = "Maximum Ball Speek: " + maxBallSpeedSlider.value;
+        maxBallSpeedSlider.label = "Maximum Ball Speed: " + maxBallSpeedSlider.value;
     }
 }
