@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 
 public class Ball : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class Ball : MonoBehaviour
     private float speed;
     public int maxSpeed;
     public int roundsToWin;
-    public string startingBall;
+    public string startingBall = "winners";
 
     private int _P1Score = 0;
     private int _P2Score = 0;
@@ -34,7 +35,8 @@ public class Ball : MonoBehaviour
     private float heightDifference;
     public UIDocument UIDoc;
     public PhysicsMaterial2D PhysBounce;
-    Label _scoreText;
+    private Label _scoreText;
+    private Button _menuButton;
 
     #endregion Variables
 
@@ -49,9 +51,17 @@ public class Ball : MonoBehaviour
             maxSpeed = settings.maxBallSpeed;
             roundsToWin = settings.roundsToWin;
             startingBall = settings.startingBall;
+        } else
+        {
+            Debug.LogError("SettingsManager not found!");
+            return;
         }
 
         _scoreText = UIDoc.rootVisualElement.Q<Label>("Score");
+        _menuButton = UIDoc.rootVisualElement.Q<Button>("MenuButton");
+
+        _menuButton.clicked += ReturnToMenu;
+
         speed = startSpeed;
         rb = GetComponent<Rigidbody2D>(); //getting a referance to the rigidbody
         Launch();
@@ -60,7 +70,12 @@ public class Ball : MonoBehaviour
 
     private void ChangeScore()
     {
-        _scoreText.text = _P1Score + " - " + _P2Score;
+        if(_P1Score < roundsToWin && _P2Score < roundsToWin)
+        {
+            _scoreText.text = _P1Score + " - " + _P2Score;
+            _menuButton.SetEnabled(false);
+            _menuButton.visible = false;
+        }
     }
 
     private void Launch()
@@ -201,8 +216,34 @@ public class Ball : MonoBehaviour
         }
     }
 
-    void Update()
+    private void ReturnToMenu()
     {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    private void Winner()
+    {
+        if(_P1Score >= roundsToWin)
+        {
+            _scoreText.text = "Player 1 Wins!";
+        }
+        else if(_P2Score >= roundsToWin)
+        {
+            _scoreText.text = "Player 2 Wins!";
+        }
+        startSpeed = 0;
+        GetComponent<SpriteRenderer>().enabled = false;
+        _menuButton.SetEnabled(true);
+        _menuButton.visible = true;
+    }
+
+    void FixedUpdate()
+    {
+        if(_P1Score >= roundsToWin || _P2Score >= roundsToWin)
+        {
+            Winner();
+        }
+
         if(rb.linearVelocityX > 0)
         {
             if(rb.linearVelocityX < startSpeed)

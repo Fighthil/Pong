@@ -585,6 +585,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Ball
   startSpeed: 6
   maxSpeed: 12
+  roundsToWin: 0
+  startingBall: losers
   topWall: {fileID: 847058117}
   bottomWall: {fileID: 961348498}
   angleIntensity: 1.5
