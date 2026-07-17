@@ -586,7 +586,7 @@ MonoBehaviour:
   startSpeed: 5
   maxSpeed: 12
   roundsToWin: 0
-  startingBall: losers
+  startingBall: winners
   playerNum: 0
   topWall: {fileID: 847058117}
   bottomWall: {fileID: 961348498}
